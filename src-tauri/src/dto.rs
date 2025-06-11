@@ -67,17 +67,15 @@ pub struct AnthropicSystemMessage {
     pub text: String,
 }
 
-fn default_thinking_type() -> String {
-    "disabled".to_string()
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(tag = "type")]
+pub enum AnthropicThinking {
+    #[serde(rename = "disabled")]
+    Disabled,
+    #[serde(rename = "enabled")]
+    Enabled { budget_tokens: u32 /* Must be ≥1024 and less than max_tokens */},
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
-pub struct AnthropicThinking {
-    #[serde(default = "default_thinking_type")]
-    pub r#type: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub budget_tokens: Option<u32>, // Must be ≥1024 and less than max_tokens
-}
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AnthropicUsage {
