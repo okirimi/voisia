@@ -1,0 +1,32 @@
+# claude code
+.claude/
+
+# cursor
+.cursor/
+
+# git
+**/.git/
+
+# github
+.github/
+
+# markdown
+**/*.md
+
+# node
+node_modules/
+package.json
+
+# typescript
+tsconfig.json
+tsconfig.node.json
+
+# vite
+vite.config.ts
+
+# vscode
+.vscode/
+
+# yarn
+.pnp.*
+yarn.lock
