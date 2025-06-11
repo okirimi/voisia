@@ -45,6 +45,18 @@ impl AnthropicRequest {
         if self.top_p < 0.0 || self.top_p > 1.0 {
             return Err("top_p must be between 0 and 1".to_string());
         }
+        if let Some(thinking) = &self.thinking {
+            if let AnthropicThinking::Enabled { budget_tokens } = thinking {
+                if *budget_tokens < 1024 {
+                    return Err("thinking.budget_tokens must be ≥ 1024".to_string());
+                }
+                if *budget_tokens >= self.max_tokens {
+                    return Err(
+                        "thinking.budget_tokens must be smaller than max_tokens".to_string(),
+                    );
+                }
+            }
+        }
         Ok(())
     }
 }
