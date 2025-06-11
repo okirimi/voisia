@@ -17,3 +17,15 @@ pub fn load_openai_api_key() -> Result<String, Error> {
         Error::new(ErrorKind::NotFound, "OpenAI API key is not found")
     })
 }
+
+pub fn load_anthropic_endpoint() -> Result<String, Error> {
+    env::var("ANTHROPIC_API_ENDPOINT").map_err(|_| {
+        Error::new(ErrorKind::NotFound, "Anthropic API endpoint is not found")
+    })
+}
+
+pub fn load_openai_endpoint() -> Result<String, Error> {
+    env::var("OPENAI_API_ENDPOINT").map_err(|_| {
+        Error::new(ErrorKind::NotFound, "OpenAI API endpoint is not found")
+    })
+}

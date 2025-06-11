@@ -1,7 +1,7 @@
 use tauri::command;
 use reqwest;
 
-use crate::api::{load_anthropic_api_key, load_openai_api_key};
+use crate::api::{load_anthropic_api_key, load_anthropic_endpoint, load_openai_api_key, load_openai_endpoint};
 use crate::dto::{
     AnthropicRequest,
     AnthropicResponse,
@@ -46,8 +46,10 @@ async fn call_anthropic_api(
     log::info!("Anthropic API request body: {:?}", request_body);
 
     // Send POST request to Anthropic API
+    let anthropic_endpoint = load_anthropic_endpoint()
+        .map_err(|e| format!("Failed to load Anthropic API endpoint: {}", e))?;
     let response = http_client
-        .post("https://api.anthropic.com/v1/messages")
+        .post(&anthropic_endpoint)
         .header("x-api-key", &api_key)
         .header("anthropic-version", "2023-06-01")
         .header("content-type", "application/json")
@@ -99,8 +101,10 @@ async fn call_openai_api(
         top_p,
     };
 
+    let openai_endpoint = load_openai_endpoint()
+        .map_err(|e| format!("Failed to load OpenAI API endpoint: {}", e))?;
     let response = http_client
-        .post("https://api.openai.com/v1/responses")
+        .post(&openai_endpoint)
         .header("Authorization", format!("Bearer {}", api_key))
         .header("Content-Type", "application/json")
         .json(&request_body)
